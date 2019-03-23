@@ -16,14 +16,11 @@ var giphyTopics = ["happy", "funny", "scared"];
 var quantity = 10;
 var rating = 'PG';
 const $buttonDiv = $(".button-div");
+const $giphyDisplay = $(".giphy-display");
 
-// window.onload = function() {
-  //   // renderTopicButtons();
-  //   // getAPIdata();
-  // };
-  
-  function alertTopic() {
-    alert($(this).attr("value"));
+  function showGiphys() {
+    var selectedTopic = $(this).attr("value");
+    getAPIdata(selectedTopic);
   }
 
 const renderTopicButtons = () => {
@@ -42,35 +39,45 @@ const renderTopicButtons = () => {
  * Makes Ajax call to trivia database API to gather information for questions.
  * @param {*} t 
  */
-  const getAPIdata = () => {
+  const getAPIdata = (search) => {
     var queryURL;
-    var search = 'happy';
     queryURL = `https://api.giphy.com/v1/gifs/search?api_key=fvrL5QJ7azyECt0FyII5urXZmu2G3iay&q=${search}&limit=${quantity}&offset=0&rating=${rating}&lang=en`
     
     $.ajax({
       url: queryURL,
       method: "GET",
     }).then(function(resp) { 
+      $giphyDisplay.empty();
+      console.log(resp.data);
       resp.data.forEach((o) => {
-        data.push(new GiphyItem(
-          o.images.fixed_height_still.url,  // still image
-          o.images.fixed_height.url,        // animated image
-          o.rating  // rating
-        ));
+          var still = o.images.fixed_height_still.url;  // still image
+          var animated = o.images.fixed_height.url;       // animated image
+          var rating = o.rating ; // rating
+          displayGiphy(still, animated, rating);
       })
-    })
+    });
   }
   
- 
+  const displayGiphy = (s, a, r) => {
+      $giphyBox = $("<div>");
+      $giphyBox.addClass("giphy-box");
+      var imageString = `<img src="${s}" data-still="${s}" data-animate="${a}" data-state="still" class="gif"></img>`;
+      $giphyBox.append(`<h3>${r}</h3>`);
+      $giphyBox.append(imageString)
+      $giphyDisplay.append($giphyBox);
+  }
+
   $("#add-topic").on("click", (e) => {
     e.preventDefault();
     var subject = $("#topic-input").val().trim();
     console.log(subject);
-    giphyTopics.push(subject);
-    renderTopicButtons();
+    if (subject !== "" && !giphyTopics.includes(subject)) {
+      giphyTopics.push(subject);
+      renderTopicButtons();
+    }
+    $("#topic-input").val('');    // clear input field
   })
-
   
-  $(document).on("click", ".topic-button", alertTopic);
+  $(document).on("click", ".topic-button", showGiphys);
 
   renderTopicButtons();
