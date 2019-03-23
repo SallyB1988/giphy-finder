@@ -48,23 +48,22 @@ const renderTopicButtons = () => {
       method: "GET",
     }).then(function(resp) { 
       $giphyDisplay.empty();
-      console.log(resp.data);
       resp.data.forEach((o) => {
           var still = o.images.fixed_height_still.url;  // still image
           var animated = o.images.fixed_height.url;       // animated image
           var rating = o.rating ; // rating
-          displayGiphy(still, animated, rating);
+          singleGiphyDisplay(still, animated, rating);
       })
     });
   }
   
-  const displayGiphy = (s, a, r) => {
-      $giphyBox = $("<div>");
-      $giphyBox.addClass("giphy-box");
-      var imageString = `<img src="${s}" data-still="${s}" data-animate="${a}" data-state="still" class="gif"></img>`;
-      $giphyBox.append(`<h3>${r}</h3>`);
-      $giphyBox.append(imageString)
-      $giphyDisplay.append($giphyBox);
+  const singleGiphyDisplay = (s, a, r) => {
+    $giphyBox = $("<div>");
+    $giphyBox.addClass("giphy-box");
+    var imageString = `<img src="${s}" data-still="${s}" data-animate="${a}" data-state="still" class="gif"></img>`;
+    $giphyBox.append(`<h3>${r}</h3>`);
+    $giphyBox.append(imageString)
+    $giphyDisplay.append($giphyBox);
   }
 
   $("#add-topic").on("click", (e) => {
@@ -78,6 +77,20 @@ const renderTopicButtons = () => {
     $("#topic-input").val('');    // clear input field
   })
   
+  $(document).on("click", ".gif", function() {
+    var state = $(this).attr("data-state");
+    var animate = $(this).attr("data-animate");
+    var still = $(this).attr("data-still");
+
+    if (state === 'still') {
+      $(this).attr("src", animate)
+      $(this).attr("data-state", animate)
+    } else {
+      $(this).attr("src", still)
+      $(this).attr("data-state", still)
+    }
+  })
+
   $(document).on("click", ".topic-button", showGiphys);
 
   renderTopicButtons();
