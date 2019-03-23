@@ -17,25 +17,25 @@ var quantity = 10;
 var rating = 'PG';
 const $buttonDiv = $(".button-div");
 
-window.onload = function() {
-  initialButtons();
-  setupbuttons();
-  // getAPIdata();
-};
+// window.onload = function() {
+  //   // renderTopicButtons();
+  //   // getAPIdata();
+  // };
+  
+  function alertTopic() {
+    alert($(this).attr("value"));
+  }
 
-const initialButtons = () => {
+const renderTopicButtons = () => {
+  $buttonDiv.empty();
   giphyTopics.forEach((t) => {
-    addTopicButton(t);
+    $tButton = $("<button>");
+    $tButton.addClass("topic-button");
+    $tButton.attr("value", t);
+    $tButton.attr("type", "button");
+    $tButton.text(t);
+    $buttonDiv.append($tButton);
   })
-}
-
-const addTopicButton = (topic) => {
-  $tButton = $("<button>");
-  $tButton.addClass("topic-button");
-  $tButton.attr("value", topic);
-  $tButton.attr("type", "button");
-  $tButton.text(topic);
-  $buttonDiv.append($tButton);
 }
 
 /**
@@ -51,8 +51,6 @@ const addTopicButton = (topic) => {
       url: queryURL,
       method: "GET",
     }).then(function(resp) { 
-      // Set # of giphy images 
-      
       resp.data.forEach((o) => {
         data.push(new GiphyItem(
           o.images.fixed_height_still.url,  // still image
@@ -63,11 +61,16 @@ const addTopicButton = (topic) => {
     })
   }
   
-  const setupbuttons = () => {
+ 
+  $("#add-topic").on("click", (e) => {
+    e.preventDefault();
+    var subject = $("#topic-input").val().trim();
+    console.log(subject);
+    giphyTopics.push(subject);
+    renderTopicButtons();
+  })
 
-    $("button").on("click", function() {
-      console.log(this.value);
-    })
-
-  }
   
+  $(document).on("click", ".topic-button", alertTopic);
+
+  renderTopicButtons();
