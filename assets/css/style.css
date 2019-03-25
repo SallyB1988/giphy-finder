@@ -1,5 +1,12 @@
 body {
-  background-color: skyblue;
+  background-image: url("../images/background7.jpg");
+    /* Full height */
+    height: 100%; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 button {
@@ -9,4 +16,50 @@ button {
   text-transform: uppercase;
   border-radius: 10px;
   margin: 10px;
+}
+
+.giphy-box {
+  border: 10px rgba(33, 143, 75, 0.596) solid;
+  width: inherit;
+  padding: 0px;
+}
+
+.rating {
+  /* padding: 5px; */
+  width: 100%;
+  margin: 0px;
+  background-color: rgba(152, 194, 114, 0.712);
+  text-align: center;
+  text-transform: uppercase;
+  color: black;
+}
+
+.gif-box {
+  height: 250px;
+  /* width: 200px; */
+  display: block;
+  margin: 0px auto;
+}
+
+.giphy-box {
+  background-color: rgba(255, 238, 83, 0.767)!important;
+
+}
+
+.gif {
+  width: 100%; 
+  height: 100%;
+  object-fit: cover;
+}
+
+#enter-topic {
+  text-align: center;
+}
+
+.button-div {
+  text-align: center;
+}
+
+.title {
+  width: 70%;
 }

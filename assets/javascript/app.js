@@ -18,6 +18,10 @@ var rating = 'PG';
 const $buttonDiv = $(".button-div");
 const $giphyDisplay = $(".giphy-display");
 
+window.onload = function() {
+  renderTopicButtons();
+}
+
   function showGiphys() {
     var selectedTopic = $(this).attr("value");
     getAPIdata(selectedTopic);
@@ -59,10 +63,13 @@ const renderTopicButtons = () => {
   
   const singleGiphyDisplay = (s, a, r) => {
     $giphyBox = $("<div>");
-    $giphyBox.addClass("giphy-box");
+    $giphyBox.addClass("col-xs-12 col-sm-12 col-md-6 col-lg-4 px-0 giphy-box");
     var imageString = `<img src="${s}" data-still="${s}" data-animate="${a}" data-state="still" class="gif"></img>`;
-    $giphyBox.append(`<h3>${r}</h3>`);
-    $giphyBox.append(imageString)
+    $giphyBox.append(`<h3 class="py-2 rating" >rating:  ${r}</h3>`);
+    $gifBox = $("<div>");
+    $gifBox.addClass("gif-box");
+    $giphyBox.append($gifBox);
+    $gifBox.append(imageString)
     $giphyDisplay.append($giphyBox);
   }
 
@@ -92,5 +99,3 @@ const renderTopicButtons = () => {
   })
 
   $(document).on("click", ".topic-button", showGiphys);
-
-  renderTopicButtons();
